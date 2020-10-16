@@ -22,21 +22,30 @@ public class App {
         String password = new String(console.readPassword("Please enter your password: "));
         boolean loginSuccess = false;
 
-        // instantiate student manager and admin manager
+        // instantiate student manager
         StudentMgr studentManager = new StudentMgr();
-        AdminMgr adminManager = new AdminMgr();
         // instantiate CourseMgr. This will instantiate all courses, timeslots, and lessons
         CourseMgr courseManager = new CourseMgr();
+        // instantiate Login class
+        Login loginMgr = new Login();
+        // instantiate data reader
+        DataReader reader = new DataReader();
+        // instantiate all students and store in studentManager and Login object
+        reader.instantiateStudents(studentManager, loginMgr);
+        // instantiate all courses and store in courseManager
+        reader.instantiateCourses(courseManager);
+        // instantiate all admins and store in loginMgr
+        reader.instantiateAdmins(loginMgr);
 
         if(choice==1){
-            // authenticate student login using student manager
-            loginSuccess = studentManager.authenticate(username, password);
+            // authenticate student login using LoginMgr
+            loginSuccess = loginMgr.authenticateStudentLogin(username, password);
             if(loginSuccess==false)
                 System.exit(-1);
         }
         else{
-            // authenticate admin login using admin manager
-            loginSuccess = adminManager.authenticate(username, password);
+            // authenticate admin login using LoginMgr
+            loginSuccess = loginMgr.authenticateAdminLogin(username, password);
             if(loginSuccess==false)
                 System.exit(-1);
             
