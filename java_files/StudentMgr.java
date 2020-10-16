@@ -1,13 +1,8 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
 
 // control class that handles all the logic related to students
 public class StudentMgr {
@@ -15,38 +10,16 @@ public class StudentMgr {
     private ArrayList<Student> students = new ArrayList<Student>();
 
     // constructor
-    public StudentMgr() throws FileNotFoundException {
-        // whenever a new student manager is created, instantiate all the students currently in our database
-        this.instantiateStudents();
-    }
+    public StudentMgr(){}
 
-    // this method reads in our database text file, and stores all the students'
-    // records in the students array
-    public void instantiateStudents() throws FileNotFoundException {
-        // scanner to read in each line in txt file
-        Scanner scStream = new Scanner(new File("student_records.txt"));
-        String inputLine;
-
-        while (scStream.hasNext()) {
-            inputLine = scStream.nextLine();
-            // splitting each input line by commas, and storing all the items in a list
-            ArrayList<String> inputList = new ArrayList<>(Arrays.asList(inputLine.split(",")));
-            // getting all the info by indexing into array
-            String username = inputList.get(0);
-            String hashedPassword = inputList.get(1);
-            String name = inputList.get(2);
-            String matricNum = inputList.get(3);
-            String gender = inputList.get(4);
-            String nationality = inputList.get(5);
-            String addDropPeriod = inputList.get(6);
-            // creating a new student object and adding it into the list
-            students.add(new Student(username, hashedPassword, name, matricNum, gender, nationality, addDropPeriod));
-        }
-    }
-
-    // get method for the array of students
+    // get method for the arraylist of students
     public ArrayList<Student> getStudents() {
         return students;
+    }
+
+    // set method for the arraylist of students
+    public void setStudents(ArrayList<Student> myList){
+        students = myList;
     }
 
     // method to add student
@@ -96,61 +69,6 @@ public class StudentMgr {
     }
     // method to remove student
 
-    // method to authenticate student's login
-    public boolean authenticate(String username, String password) throws ParseException {
-        boolean correctPW = false;
-        boolean correctPeriod = false;
-        Student currentUser = null;
-        PasswordAuthentication p = new PasswordAuthentication();
-        
-        // search through arraylist for the student with this username
-        for(int i=0; i<students.size(); i++){
-            Student currentStudent = students.get(i);
-            // if the usernames match
-            if(username.equals(currentStudent.getUsername())){
-                currentUser = currentStudent;
-                // compare the corresponding passwords
-                correctPW = p.authenticate(password.toCharArray(), currentStudent.getPassword());
-            }
-        }
-        // if the end of the for loop is reached, and currentUser is still null, it means that username was not found in database
-        if(currentUser==null){
-            System.out.println("Username not found in school's records. Please try again.");
-            return false;
-        }
-        // if wrong password was entered
-        if(correctPW==false){
-            System.out.println("Wrong password.");
-            return false;
-        }
-        // at this point, username and password are both correct. I need to check the add/drop period
-        String addDropPeriod = currentUser.getAddDropPeriod();
-        ArrayList<String> dateList = new ArrayList<>(Arrays.asList(addDropPeriod.split(":")));
-        String start = dateList.get(0);
-        String end = dateList.get(1);
-        // converting to date objects
-        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(start);
-        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(end);
-        // getting today's date
-        LocalDate localDate = LocalDate.now();
-        Date dateToday = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        // checking if today's date is within the start and end date
-        correctPeriod = !(dateToday.before(startDate) || dateToday.after(endDate));
-
-        if(correctPeriod==false){
-            if(dateToday.before(startDate))
-                System.out.println("Your add drop period has not started.");
-            else
-                System.out.println("Your add drop period has already ended.");
-            return false;
-        }
-        else{
-            System.out.println("Login successful.");
-            return true;
-        }
-    }
-
     // method to edit a student's access period
     public void editAccessPeriod(String matric, String period) throws ParseException {
         // returns true if input period has no error
@@ -170,7 +88,7 @@ public class StudentMgr {
             }
         }
         if(found==0){
-            System.out.println("Student not found");
+            System.out.println("Student not found.");
         }
         else{
             // print the full list of students with their corresponding access period
@@ -229,3 +147,4 @@ public class StudentMgr {
         }
     }
 }
+
