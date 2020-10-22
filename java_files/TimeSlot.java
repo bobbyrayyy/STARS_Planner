@@ -18,6 +18,9 @@ public class TimeSlot {
     public int getIndexNum(){return indexNum;}
     public void setIndexNum(int num){indexNum = num;}
 
+    public int getVacancy(){return vacancy;}
+    public void setVacancy(int vacancy){this.vacancy = vacancy;}
+
     // method that returns all the students in timeslot
     public ArrayList<Student> getStudentsInTimeslot(){return studentsInTimeslot;}
     // method to add student to time slot

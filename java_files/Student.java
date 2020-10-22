@@ -10,6 +10,7 @@ public class Student {
     private String gender;
     private String nationality;
     private String addDropPeriod;
+    private int totalAUs;
     // courses is an array of Course objects that the student is taking
     private ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -22,6 +23,7 @@ public class Student {
         setGender(gender);
         setNationality(nat);
         setAddDropPeriod(period);
+        totalAUs = 0;
     }
 
     // getters and setters
@@ -46,11 +48,28 @@ public class Student {
     public String getAddDropPeriod(){return addDropPeriod;}
     public void setAddDropPeriod(String period){addDropPeriod = period;}
 
+    public int getStudentAUs(){return totalAUs;}
+    public void setStudentAUs(int AUs){totalAUs = AUs;}
+
     public ArrayList<Course> getCourses(){return courses;}
     // method to add course
     public void addCourse(Course c){
         courses.add(c);
     }
     // method to remove course
-    
+    public boolean dropCourse(String courseCode){
+        // search through the arrayList to find the correct course
+        for(int i=0; i<courses.size(); i++){
+            Course c = courses.get(i);
+            // if the courseCode matches
+            if(courseCode.equals(c.getCourseCode())){
+                // reduce the number of AUs for the student
+                totalAUs -= c.getAUs();
+                // remove the course from the student's courses array
+                courses.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }

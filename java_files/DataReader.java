@@ -14,7 +14,7 @@ public class DataReader {
 
     // this method reads in our database text file, instantiates all the student objects,
     // and stores an arraylist of these student objects in StudentMgr class
-    public void instantiateStudents(StudentMgr studentManager, Login l) throws FileNotFoundException {
+    public void instantiateStudents(StudentRecords students, Login l) throws FileNotFoundException {
         // scanner to read in each line in txt file
         Scanner scStream = new Scanner(new File("student_records.txt"));
         String inputLine;
@@ -37,13 +37,13 @@ public class DataReader {
             allStudents.add(new Student(username, hashedPassword, name, matricNum, gender, nationality, addDropPeriod));
         }
         // storing the arraylist of students in StudentMgr object and Login object
-        studentManager.setStudents(allStudents);
+        students.setStudents(allStudents);
         l.setStudents(allStudents);
     }
     
     // this method reads in our databse txt file, and stores all the course records
     // in the courses array
-    public void instantiateCourses(CourseMgr courseManager) throws FileNotFoundException {
+    public void instantiateCourses(CourseRecords courseRec) throws FileNotFoundException {
         Scanner scStream = new Scanner(new File("course_records.txt"));
         String inputLine;
         String inputLine2;
@@ -57,10 +57,11 @@ public class DataReader {
             String courseCode = inputList.get(0);
             String name = inputList.get(1);
             String school = inputList.get(2);
-            String timeslots = inputList.get(3);
+            int AUs = Integer.parseInt(inputList.get(3));
+            String timeslots = inputList.get(4);
             
             // instantianting a Course object
-            Course c = new Course(courseCode, name, school);
+            Course c = new Course(courseCode, name, school, AUs);
 
             // timeslotList is an arraylist of all the index numbers for a particular course
             ArrayList<String> timeslotList = new ArrayList<>(Arrays.asList(timeslots.split(";")));
@@ -95,11 +96,13 @@ public class DataReader {
                 c.addTimeSlot(t);
             }
             // at this point, the current course has been fully populated with all of its corresponding timeslots
+            // calculate and set total number of vacancies in this course
+            c.calculateAndSetVacancies();
             // at this course to the courses arraylist
             allCourses.add(c);
         }
         scStream.close();
-        courseManager.setCourses(allCourses);
+        courseRec.setCourses(allCourses);
     }
 
     // this method reads in the admin.txt file, and stores all the admins' records
