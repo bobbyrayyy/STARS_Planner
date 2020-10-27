@@ -23,8 +23,10 @@ public class CourseDetails {
     }
 
 
-    // method to print all students taking a course
-    public void printStudentsByCourse(Course course){
+    // method to print all students taking a course. It returns true if there are no students taking the course, and false otherwise
+    public boolean printStudentsByCourse(Course course){
+        boolean empty = true;
+        System.out.println("List of students taking " + course.getCourseCode());
         // get all the timeslots for that course
         ArrayList<TimeSlot> timeslots = course.getTimeslots();
         // for each timeslot in the array list
@@ -32,13 +34,15 @@ public class CourseDetails {
             TimeSlot t = timeslots.get(j);
             // get all the students in that timeslot
             ArrayList<Student> students = t.getStudentsInTimeslot();
+            if(students.size()!=0)
+                empty = false;
             // for each student in the array list
             for(int k=0; k<students.size(); k++){
                 Student s = students.get(k);
                 System.out.println(s.getName() + ", " + s.getGender() + ", " + s.getNationality());
             }
         }
-        return;
+        return empty;
     }
 
     // method to print all students in a particular timeslot
@@ -52,6 +56,11 @@ public class CourseDetails {
             if(indexNum==t.getIndexNum()){
                 // get all the students in that timeslot
                 ArrayList<Student> students = t.getStudentsInTimeslot();
+                if(students.size()==0){
+                    System.out.println("No students in index " + indexNum);
+                    return;
+                }
+                System.out.println("List of students in index " + indexNum);
                 // for each student in the array list
                 for(int k=0; k<students.size(); k++){
                     Student s = students.get(k);

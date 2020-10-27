@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 // Student is an entity class
 public class Student {
@@ -13,6 +14,10 @@ public class Student {
     private int totalAUs;
     // courses is an array of Course objects that the student is taking
     private ArrayList<Course> courses = new ArrayList<Course>();
+    // this dictionary keeps track of which timeslot a student is taking with each course
+    private Hashtable<String, Integer> dict;
+    // student's timetable
+    private int[][] studentTimetable;
 
     // constructor
     public Student(String username, String pw, String name, String num, String gender, String nat, String period){
@@ -24,9 +29,36 @@ public class Student {
         setNationality(nat);
         setAddDropPeriod(period);
         totalAUs = 0;
+        // creating the student's timetable and filling it with zeros
+        int [][] timetable = new int[5][12];
+        for(int i=0; i<5; i++){
+            for(int j=0; j<12; j++){
+                timetable[i][j] = 0;
+            }
+        }
+        studentTimetable = timetable;
+        // create an empty dictionary
+        dict = new Hashtable<String,Integer>();
+    }
+    // method to add something into dictionary
+    public void addToDict(String courseCode, int index){
+        dict.put(courseCode, index);
     }
 
+    // method to remove key value pair from dictionary
+    public void removeFromDict(String courseCode){
+        dict.remove(courseCode);
+    }
+    
+    // method to get a value from the dictionary
+    public Integer fromDict(String courseCode){
+        return dict.get(courseCode);
+    }
+    
     // getters and setters
+    public int[][] getStudentTimetable(){return studentTimetable;}
+    public void setStudentTimeTable(int[][] timetable){studentTimetable=timetable;}
+
     public String getUsername(){return username;}
     public void setUsername(String username){this.username = username;}
 
@@ -52,24 +84,26 @@ public class Student {
     public void setStudentAUs(int AUs){totalAUs = AUs;}
 
     public ArrayList<Course> getCourses(){return courses;}
+
     // method to add course
     public void addCourse(Course c){
         courses.add(c);
+        totalAUs += c.getAUs();
     }
-    // method to remove course
-    public boolean dropCourse(String courseCode){
-        // search through the arrayList to find the correct course
+
+    // method to drop course
+    public void removeCourse(Course c){
+        courses.remove(c);
+        totalAUs -= c.getAUs();
+    }
+
+    // method to find a course that a student is taking. returns a Course object
+    public Course findCourse(String courseCode){
         for(int i=0; i<courses.size(); i++){
             Course c = courses.get(i);
-            // if the courseCode matches
-            if(courseCode.equals(c.getCourseCode())){
-                // reduce the number of AUs for the student
-                totalAUs -= c.getAUs();
-                // remove the course from the student's courses array
-                courses.remove(i);
-                return true;
-            }
+            if(courseCode.equals(c.getCourseCode()))
+                return c;
         }
-        return false;
+        return null;
     }
 }
