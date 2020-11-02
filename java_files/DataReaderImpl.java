@@ -14,7 +14,7 @@ public class DataReaderImpl implements DataReader{
 
     // this method reads in our database text file, instantiates all the student objects,
     // and stores an arraylist of these student objects in StudentMgr class
-    public void instantiateStudents(StudentRecords students, Login l) throws FileNotFoundException {
+    public void instantiateStudents(StudentRecords students) throws FileNotFoundException {
         // scanner to read in each line in txt file
         Scanner scStream = new Scanner(new File("student_records.txt"));
         String inputLine;
@@ -33,12 +33,12 @@ public class DataReaderImpl implements DataReader{
             String gender = inputList.get(4);
             String nationality = inputList.get(5);
             String addDropPeriod = inputList.get(6);
+            String email = inputList.get(7);
             // creating a new student object and adding it into the list
-            allStudents.add(new Student(username, hashedPassword, name, matricNum, gender, nationality, addDropPeriod));
+            allStudents.add(new Student(username, hashedPassword, name, matricNum, gender, nationality, addDropPeriod, email));
         }
-        // storing the arraylist of students in StudentMgr object and Login object
+        // storing the arraylist of students in StudentRecords object
         students.setStudents(allStudents);
-        l.setStudents(allStudents);
     }
     
     // this method reads in our databse txt file, and stores all the course records
@@ -109,7 +109,7 @@ public class DataReaderImpl implements DataReader{
 
     // this method reads in the admin.txt file, and stores all the admins' records
     // in the admins array
-    public void instantiateAdmins(Login l) throws FileNotFoundException {
+    public void instantiateAdmins(AdminRecords adminRecords) throws FileNotFoundException {
         // scanner to read each line in txt file
         Scanner scStream = new Scanner(new File("admin.txt"));
         String inputLine;
@@ -125,7 +125,7 @@ public class DataReaderImpl implements DataReader{
             String name = inputList.get(2);
             // creating a new admin object and adding it into the arraylist
             admins.add(new Admin(username, hashedPW, name));
-            l.setAdmins(admins);
+            adminRecords.setAdmins(admins);
         }
     }
 }

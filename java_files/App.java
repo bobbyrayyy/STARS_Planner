@@ -17,16 +17,16 @@ public class App {
         CourseDetails courseDet = new CourseDetails();
         // instantiate CourseRecords
         CourseRecords courseRecs = new CourseRecords();
-        // instantiate Login class
-        Login loginMgr = new Login();
+        // instantiate AdminRecords
+        AdminRecords adminRecs = new AdminRecords();
         // instantiate data reader
         DataReaderImpl reader = new DataReaderImpl();
         // instantiate all students and store in studentRecords and Login object
-        reader.instantiateStudents(studentRecs, loginMgr);
+        reader.instantiateStudents(studentRecs);
         // instantiate all courses and store in courseManager
         reader.instantiateCourses(courseRecs);
         // instantiate all admins and store in loginMgr
-        reader.instantiateAdmins(loginMgr);
+        reader.instantiateAdmins(adminRecs);
         
         //boolean loop = true;
         while(true){
@@ -47,10 +47,11 @@ public class App {
             boolean loginSuccess = false;
 
             if(choice==1){
-                // authenticate student login using LoginMgr
-                loginSuccess = loginMgr.authenticateStudentLogin(username, password);
+                // look for student in student array
+                Student student = studentRecs.findStudent(username);
+                if(student!=null)
+                    loginSuccess = student.authenticateLogin(username, password);
                 if(loginSuccess==true){
-                    Student student = studentRecs.findStudent(username);
                     int menuChoice;
                     do{
                         // print the menu
@@ -160,9 +161,8 @@ public class App {
                                     break;
                                 }
                                 String friendPassword = new String(console.readPassword("Please get this student to enter his/her password: "));
-                                boolean loginStatus = loginMgr.authenticateStudentLogin(username1, friendPassword);
+                                boolean loginStatus = friend.authenticateLogin(username1, friendPassword);
                                 if(loginStatus==false){
-                                    System.out.println("Wrong password.");
                                     break;
                                 }
                                 studentManager.swapCourse(student, friend, course1);
@@ -183,8 +183,10 @@ public class App {
                 }
             }
             else{
-                // authenticate admin login using LoginMgr
-                loginSuccess = loginMgr.authenticateAdminLogin(username, password);
+                // find admin 
+                Admin a = adminRecs.findAdmin(username);
+                if(a!=null)
+                    loginSuccess = a.authenticateLogin(username, password);
                 if(loginSuccess==true){
                     int menuChoice;
                     do{
@@ -230,7 +232,9 @@ public class App {
                                 String nat = scanner.next();
                                 System.out.println("Access period in the following format YYYY-MM-DD:YYYY-MM-DD");
                                 String accessPer = scanner.next();
-                                studentRecs.addStudent(usernm, nm, matric, g, nat, accessPer); 
+                                System.out.println("Email address: ");
+                                String email = scanner.next();
+                                studentRecs.addStudent(usernm, nm, matric, g, nat, accessPer, email); 
                                 break;
                             case 3:
                                 int choice2;
@@ -327,7 +331,7 @@ public class App {
                                                     System.out.println("Enter the new number of vacancies: ");
                                                     int newVac = scanner.nextInt();
                                                     t.setIndexNum(newIndex);
-                                                    t.setVacancy(newVac);
+                                                    t.editVacancy(newVac, c, studentManager);
                                                     break;
                                                 case 6:
                                                     // print all course info

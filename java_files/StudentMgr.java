@@ -44,7 +44,7 @@ public class StudentMgr {
             // add student to timeslot's student array
             addedIndex.addStudentToTimeslot(student);
             // add course to student's course array
-            student.addCourse(addedCourse);
+            student.addCourseToArray(addedCourse);
             // add key value pair to student's dictionary
             student.addToDict(addedCourse.getCourseCode(), addedIndex.getIndexNum());
             return true;
@@ -73,7 +73,7 @@ public class StudentMgr {
         t.removeStudentFromTimeslot(student);
 
         // remove course from student's course array
-        student.removeCourse(course);
+        student.removeCourseFromArray(course);
 
         // remove key value pair from dictionary
         student.removeFromDict(courseCode);
@@ -113,7 +113,7 @@ public class StudentMgr {
         t.removeStudentFromTimeslot(student);
 
         // remove course from student's course array
-        student.removeCourse(course);
+        student.removeCourseFromArray(course);
 
         // remove key value pair from dictionary
         student.removeFromDict(course.getCourseCode());
@@ -138,7 +138,7 @@ public class StudentMgr {
         t1.removeStudentFromTimeslot(student);
 
         // remove course from friend's course array
-        friend.removeCourse(course);
+        friend.removeCourseFromArray(course);
 
         // remove key value pair from dictionary
         friend.removeFromDict(course.getCourseCode());

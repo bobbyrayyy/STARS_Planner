@@ -42,7 +42,7 @@ public class StudentRecords {
     }
 
     // method to add student
-    public void addStudent(String usernm, String nm, String matric, String g, String nat, String accessPer) {
+    public void addStudent(String usernm, String nm, String matric, String g, String nat, String accessPer, String email) {
         // error handle matric number
         // assuming that all matric numbers must be of length 9
         if(matric.length()!=9){
@@ -72,11 +72,11 @@ public class StudentRecords {
         if(x==false)
             return; 
         
-        PasswordAuthentication p = new PasswordAuthentication();
+        PasswordAuthentication1 p = new PasswordAuthentication1();
         // when a student is added, the default password will be the same as his/her username
         String hashedPW = p.hash(usernm.toCharArray());
         // creating a new student
-        Student newStudent = new Student(usernm, hashedPW, nm, matric, g, nat, accessPer);
+        Student newStudent = new Student(usernm, hashedPW, nm, matric, g, nat, accessPer, email);
         // adding new student to array list
         students.add(newStudent);
 

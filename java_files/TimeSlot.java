@@ -25,7 +25,54 @@ public class TimeSlot {
     public void setIndexNum(int num){indexNum = num;}
 
     public int getVacancy(){return vacancy;}
-    public void setVacancy(int vacancy){this.vacancy = vacancy;}
+    public void setVacancy(int vacancy){this.vacancy=vacancy;}
+    public void editVacancy(int newVacancy, Course course, StudentMgr mgr){
+        // whenever admin uses this method to set new vacancy, check whether there is anyone in the waitlist
+        if(waitList.size()==0)
+            vacancy = newVacancy;
+        else{
+            // update vacancy
+            vacancy = newVacancy;
+            int x = waitList.size();
+            // need to remove students from the waitlist
+            if(newVacancy > waitList.size()){
+                // remove everyone on the waitlist
+                for(int i=0; i<x; i++){
+                    // remove the first student from the waitlist
+                    Student s = waitList.get(0);
+                    waitList.remove(0);
+                    // add course to student s
+                    mgr.addCourse(s, this, course);
+                    // simulate notification sent to student s
+                    System.out.println("Notification sent to student: " + s.getName() + " to inform that course " + course.getCourseCode() + " has been successfully added.");
+                }
+            }
+            else if(newVacancy==waitList.size()){
+                // remove everyone on the waitlist
+                for(int i=0; i<x; i++){
+                    // remove the first student from the waitlist
+                    Student s = waitList.get(0);
+                    waitList.remove(0);
+                    // add course to student s
+                    mgr.addCourse(s, this, course);
+                    // simulate notification sent to student s
+                    System.out.println("Notification sent to student: " + s.getName() + " to inform that course " + course.getCourseCode() + " has been successfully added.");
+                }
+            }
+            else{
+                // more students in waitlist than new vacancies
+                for(int i=0; i<x; i++){
+                    // remove the first student from the waitlist
+                    Student s = waitList.get(0);
+                    waitList.remove(0);
+                    // add course to student s
+                    mgr.addCourse(s, this, course);
+                    // simulate notification sent to student s
+                    System.out.println("Notification sent to student: " + s.getName() + " to inform that course " + course.getCourseCode() + " has been successfully added.");
+                }
+            }
+        }
+    }
 
     public int[][] getIndexTimetable(){return indexTimetable;}
 
