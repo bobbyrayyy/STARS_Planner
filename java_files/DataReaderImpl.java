@@ -16,7 +16,7 @@ public class DataReaderImpl implements DataReader{
     // and stores an arraylist of these student objects in StudentMgr class
     public void instantiateStudents(StudentRecords students) throws FileNotFoundException {
         // scanner to read in each line in txt file
-        Scanner scStream = new Scanner(new File("student_records.txt"));
+        Scanner scStream = new Scanner(new File("text_files/student_records.txt"));
         String inputLine;
         // creating an arraylist to store student objects
         ArrayList<Student> allStudents = new ArrayList<Student>();
@@ -44,7 +44,7 @@ public class DataReaderImpl implements DataReader{
     // this method reads in our databse txt file, and stores all the course records
     // in the courses array
     public void instantiateCourses(CourseRecords courseRec) throws FileNotFoundException {
-        Scanner scStream = new Scanner(new File("course_records.txt"));
+        Scanner scStream = new Scanner(new File("text_files/course_records.txt"));
         String inputLine;
         String inputLine2;
         ArrayList<Course> allCourses = new ArrayList<Course>();
@@ -72,7 +72,7 @@ public class DataReaderImpl implements DataReader{
                 // create a timeslot for that index number
                 TimeSlot t = new TimeSlot(indexNum);
 
-                Scanner scStream2 = new Scanner(new File("lessons.txt"));
+                Scanner scStream2 = new Scanner(new File("text_files/lessons.txt"));
                 // read the lessons.txt file
                 while(scStream2.hasNext()){
                     inputLine2 = scStream2.nextLine();
@@ -111,7 +111,7 @@ public class DataReaderImpl implements DataReader{
     // in the admins array
     public void instantiateAdmins(AdminRecords adminRecords) throws FileNotFoundException {
         // scanner to read each line in txt file
-        Scanner scStream = new Scanner(new File("admin.txt"));
+        Scanner scStream = new Scanner(new File("text_files/admin.txt"));
         String inputLine;
         ArrayList<Admin> admins = new ArrayList<Admin>();
 

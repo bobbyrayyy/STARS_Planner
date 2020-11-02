@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class StudentMgr {
     // instance variables
     private StudentDetails deets;
+    private Email email;
     // constructor
     public StudentMgr(){
         deets = new StudentDetails();
@@ -28,6 +29,7 @@ public class StudentMgr {
 
     // method for student to add course
     public boolean addCourse(Student student, TimeSlot addedIndex, Course addedCourse){
+        
         // checking for lesson clash
         int[][] newStudentTimetable = deets.checkLessonClash(student.getStudentTimetable(), addedIndex.getIndexTimetable());
         if(newStudentTimetable==null)
@@ -47,7 +49,10 @@ public class StudentMgr {
             student.addCourseToArray(addedCourse);
             // add key value pair to student's dictionary
             student.addToDict(addedCourse.getCourseCode(), addedIndex.getIndexNum());
+            this.email = new Email(student);
+            this.email.addNotification(student, addedCourse);
             return true;
+
         }
     }
     
@@ -77,6 +82,9 @@ public class StudentMgr {
 
         // remove key value pair from dictionary
         student.removeFromDict(courseCode);
+        //Email notification
+        this.email = new Email(student);
+        this.email.dropNotification(course,indexDropped, student);
 
         // settle waitlist
         if(t.getVacancy()==1){

@@ -89,6 +89,7 @@ public class TimeSlot {
     public void addStudentToTimeslot(Student s){
         studentsInTimeslot.add(s);
         vacancy--;
+
     }
 
     // method to remove student from time slot
